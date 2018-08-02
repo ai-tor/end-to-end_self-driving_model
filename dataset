@@ -3,10 +3,15 @@
 
 from deepgtav.messages import Start, Stop, Dataset, frame2numpy, Scenario
 from deepgtav.client import Client
+from config import *
 
 import argparse
 import time
 import cv2
+
+
+# fourcc = cv2.cv.CV_FOURCC('M', 'J', 'P', 'G')
+videoWriter = cv2.VideoWriter(PATH, -1, FPS, (FRAME[0], FRAME[1]))
 
 # Stores a dataset file with data coming from DeepGTAV
 if __name__ == '__main__':
@@ -19,28 +24,33 @@ if __name__ == '__main__':
     # Creates a new connection to DeepGTAV using the specified ip and port. 
     # If desired, a dataset path and compression level can be set to store in memory all the data received in a gziped pickle file.
     client = Client(ip=args.host, port=args.port, datasetPath=args.dataset_path, compressionLevel=9)
-    
+
     # Configures the information that we want DeepGTAV to generate and send to us. 
     # See deepgtav/messages.py to see what options are supported
-    dataset = Dataset(rate=30, frame=[320,160], throttle=True, brake=True, steering=True, vehicles=True, peds=True, reward=[15.0, 0.0], direction=None, speed=True, yawRate=True, location=True, time=True)
+    dataset = Dataset(rate=FPS, frame=FRAME, throttle=True, brake=True, steering=True, vehicles=True, peds=True,
+                      reward=[15.0, 0.0], direction=None, speed=True, yawRate=True, location=True, time=True)
     # Send the Start request to DeepGTAV.
-    scenario = Scenario(drivingMode=[786603,15.0]) # Driving style is set to normal, with a speed of 15.0 mph. All other scenario options are random.
-    client.sendMessage(Start(dataset=dataset,scenario=scenario))
+    scenario = Scenario(drivingMode=[786603,
+                                     15.0])  # Driving style is set to normal, with a speed of 15.0 mph. All other scenario options are random.
+    client.sendMessage(Start(dataset=dataset, scenario=scenario))
 
     # Start listening for messages coming from DeepGTAV. We do it for 80 hours
-    stoptime = time.time() + 80*3600
+    stoptime = time.time() + 80 * 3600
     while time.time() < stoptime:
         try:
             # We receive a message as a Python dictionary
-            message = client.recvMessage()  
-            
-            # The frame is a numpy array and can be displayed using OpenCV or similar       
-            # image = frame2numpy(message['frame'], (320,160))
-            # cv2.imshow('img',image)
+            message = client.recvMessage()
+
+            # The frame is a numpy array and can be displayed using OpenCV or similar
+            #TODO: save frames into video
+            image = frame2numpy(message['frame'], (FRAME[0], FRAME[1]))
+            videoWriter.write(image)
+            cv2.imshow('img',image)
             # cv2.waitKey(-1)
         except KeyboardInterrupt:
             break
-            
+
+    videoWriter.release()
     # We tell DeepGTAV to stop
     client.sendMessage(Stop())
     client.close()
