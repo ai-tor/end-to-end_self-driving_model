@@ -16,7 +16,7 @@ videoWriter = cv2.VideoWriter(PATH, -1, FPS, (FRAME[0], FRAME[1]))
 # Stores a dataset file with data coming from DeepGTAV
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument('-l', '--host', default='localhost', help='The IP where DeepGTAV is running')
+    parser.add_argument('-l', '--host', default='192.168.137.1', help='The IP where DeepGTAV is running')
     parser.add_argument('-p', '--port', default=8000, help='The port where DeepGTAV is running')
     parser.add_argument('-d', '--dataset_path', default='dataset.pz', help='Place to store the dataset')
     args = parser.parse_args()
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     client.sendMessage(Start(dataset=dataset, scenario=scenario))
 
     # Start listening for messages coming from DeepGTAV. We do it for 80 hours
-    stoptime = time.time() + 80 * 3600
+    stoptime = time.time() + 10 * 60
     while time.time() < stoptime:
         try:
             # We receive a message as a Python dictionary
@@ -45,7 +45,7 @@ if __name__ == '__main__':
             #TODO: save frames into video
             image = frame2numpy(message['frame'], (FRAME[0], FRAME[1]))
             videoWriter.write(image)
-            cv2.imshow('img',image)
+            # cv2.imshow('img',image)
             # cv2.waitKey(-1)
         except KeyboardInterrupt:
             break
