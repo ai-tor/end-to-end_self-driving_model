@@ -7,7 +7,7 @@ base_path = os.getcwd()
 output_file_dir = 'video/'
 output_file_name = 'capturedVideo.avi'
 DIR_PATH = os.path.join(base_path, output_file_dir)
-GFILE_PATH = os.path.join(base_path, 'dataset.pz')
+GFILE_PATH = os.path.join(base_path, 'dataset_2_pnc.pz')
 
 if os.path.exists(DIR_PATH):
     temp_file_path = os.path.join(DIR_PATH, output_file_name)

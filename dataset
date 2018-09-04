@@ -42,7 +42,6 @@ if __name__ == '__main__':
             message = client.recvMessage()
 
             # The frame is a numpy array and can be displayed using OpenCV or similar
-            #TODO: save frames into video
             image = frame2numpy(message['frame'], (FRAME[0], FRAME[1]))
             # videoWriter.write(image)
             # cv2.imshow('img',image)
