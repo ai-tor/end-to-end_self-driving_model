@@ -11,14 +11,14 @@ import cv2
 
 
 # fourcc = cv2.cv.CV_FOURCC('M', 'J', 'P', 'G')
-videoWriter = cv2.VideoWriter(PATH, -1, FPS, (FRAME[0], FRAME[1]))
+# videoWriter = cv2.VideoWriter(PATH, -1, FPS, (FRAME[0], FRAME[1]))
 
 # Stores a dataset file with data coming from DeepGTAV
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument('-l', '--host', default='localhost', help='The IP where DeepGTAV is running')
+    parser.add_argument('-l', '--host', default='192.168.137.1', help='The IP where DeepGTAV is running')
     parser.add_argument('-p', '--port', default=8000, help='The port where DeepGTAV is running')
-    parser.add_argument('-d', '--dataset_path', default='dataset.pz', help='Place to store the dataset')
+    parser.add_argument('-d', '--dataset_path', default=GFILE_PATH, help='Place to store the dataset')
     args = parser.parse_args()
 
     # Creates a new connection to DeepGTAV using the specified ip and port. 
@@ -42,15 +42,14 @@ if __name__ == '__main__':
             message = client.recvMessage()
 
             # The frame is a numpy array and can be displayed using OpenCV or similar
-            #TODO: save frames into video
             image = frame2numpy(message['frame'], (FRAME[0], FRAME[1]))
-            videoWriter.write(image)
+
             # cv2.imshow('img',image)
             # cv2.waitKey(-1)
         except KeyboardInterrupt:
             break
 
-    videoWriter.release()
+    # videoWriter.release()
     # We tell DeepGTAV to stop
     client.sendMessage(Stop())
     client.close()

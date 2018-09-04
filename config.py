@@ -1,12 +1,13 @@
 import os
 
 FPS = 30
-FRAME = [320, 160]
-
+# FRAME = [320, 160]
+FRAME = [480, 320]
 base_path = os.getcwd()
 output_file_dir = 'video/'
 output_file_name = 'capturedVideo.avi'
 DIR_PATH = os.path.join(base_path, output_file_dir)
+GFILE_PATH = os.path.join(base_path, 'dataset_2_.pz')
 
 if os.path.exists(DIR_PATH):
     temp_file_path = os.path.join(DIR_PATH, output_file_name)
