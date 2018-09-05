@@ -1,7 +1,9 @@
 import os
 
+DEFAULT_IP = 'localhost'
+DEFAULT_PORT = 8000
 FPS = 10
-FRAME = [480, 320]
+# FRAME = [480, 320]
 FRAME = [320, 160]
 base_path = os.getcwd()
 output_file_dir = 'video/'

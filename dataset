@@ -16,8 +16,8 @@ import cv2
 # Stores a dataset file with data coming from DeepGTAV
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument('-l', '--host', default='192.168.137.1', help='The IP where DeepGTAV is running')
-    parser.add_argument('-p', '--port', default=8000, help='The port where DeepGTAV is running')
+    parser.add_argument('-l', '--host', default=DEFAULT_IP, help='The IP where DeepGTAV is running')
+    parser.add_argument('-p', '--port', default=DEFAULT_PORT, help='The port where DeepGTAV is running')
     parser.add_argument('-d', '--dataset_path', default=GFILE_PATH, help='Place to store the dataset')
     args = parser.parse_args()
 
